@@ -7,9 +7,9 @@ export default function Header() {
   return (
     <div className="header">
       {/* LEFT */}
-      <div className="header-left">
+      {/* <div className="header-left">
         <h2>Book Management System</h2>
-      </div>
+      </div> */}
 
       {/* CENTER */}
       <div className="header-center">
