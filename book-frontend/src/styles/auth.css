@@ -1,0 +1,54 @@
+@import "./variable.css";
+
+.auth-container {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+.auth-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+.auth-right {
+  background-image: url("../assets/login.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.auth-card {
+  width: 360px;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+}
+
+.auth-card h2 {
+  margin-bottom: 6px;
+}
+
+.auth-card p {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.auth-card button {
+  width: 100%;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}

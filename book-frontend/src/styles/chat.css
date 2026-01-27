@@ -1,0 +1,18 @@
+@import "./variable.css";
+
+.chat {
+  max-width: 800px;
+  margin: auto;
+  background: white;
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+}
+
+.message {
+  max-width: 75%;
+}
+
+.user {
+  align-self: flex-end;
+}

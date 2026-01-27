@@ -1,0 +1,23 @@
+from rest_framework import serializers
+from .models import Book
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = "__all__"
+
+    def validate_isbn(self, value):
+        if len(value) != 13 or not value.isdigit():
+            raise serializers.ValidationError("ISBN must be exactly 13 digits")
+        return value
+    
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # ADD USERNAME TO TOKEN
+        token["username"] = user.username
+
+        return token

@@ -1,0 +1,30 @@
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  padding: 20px 0;
+  border-right: 1px solid #eee;
+}
+
+.logo {
+  padding: 20px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.menu {
+  display: block;
+  padding: 12px 20px;
+  margin: 6px 12px;
+  color: #111827;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.menu:hover {
+  background: #f1f5f9;
+}
+
+.menu.active {
+  background: #2563eb;
+  color: white;
+}

@@ -1,0 +1,39 @@
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f7fe;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+  padding: 20px;
+}
+
+.sidebar h2 {
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #111827;
+  text-decoration: none;
+  margin-bottom: 6px;
+}
+
+.sidebar a.active,
+.sidebar a:hover {
+  background: #2563eb;
+  color: white;
+}
+
+/* Main area */
+.main {
+  flex: 1;
+  padding: 32px;
+}
