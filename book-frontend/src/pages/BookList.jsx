@@ -14,9 +14,12 @@ export default function BookList() {
   const fetchBooks = async () => {
     try {
       const res = await API.get("books/");
-      setBooks(res.data.results);
+      // Handle both paginated and non-paginated responses
+      const booksData = res.data.results || res.data;
+      setBooks(Array.isArray(booksData) ? booksData : []);
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching books:", err);
+      setBooks([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
@@ -45,17 +48,25 @@ export default function BookList() {
               </thead>
 
               <tbody>
-                {books.map((book) => (
-                  <tr key={book.id}>
-                    <td>{book.id}</td>
-                    <td>{book.title}</td>
-                    <td>{book.author}</td>
-                    <td>{book.isbn}</td>
-                    <td>{book.price}</td>
-                    <td>{book.quantity}</td>
-                    <td className="action">👁️</td>
+                {books && books.length > 0 ? (
+                  books.map((book) => (
+                    <tr key={book.id}>
+                      <td>{book.id}</td>
+                      <td>{book.title}</td>
+                      <td>{book.author}</td>
+                      <td>{book.isbn}</td>
+                      <td>{book.price}</td>
+                      <td>{book.quantity}</td>
+                      <td className="action">👁️</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" style={{ textAlign: "center", padding: "20px" }}>
+                      No books found
+                    </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

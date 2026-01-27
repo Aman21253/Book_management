@@ -6,18 +6,16 @@ class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = "__all__"
+        read_only_fields = ("created_by", "created_at", "updated_at")
 
     def validate_isbn(self, value):
         if len(value) != 13 or not value.isdigit():
             raise serializers.ValidationError("ISBN must be exactly 13 digits")
         return value
-    
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
-        # ADD USERNAME TO TOKEN
         token["username"] = user.username
-
         return token

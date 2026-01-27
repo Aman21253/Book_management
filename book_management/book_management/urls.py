@@ -29,7 +29,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path(
-    'api/token/',
-    TokenObtainPairView.as_view(serializer_class=MyTokenObtainPairSerializer),
-),
+        'api/token/',
+        TokenObtainPairView.as_view(
+            serializer_class=MyTokenObtainPairSerializer
+        ),
+    ),
 ]

@@ -11,6 +11,7 @@ export default function AddBook() {
   const [author, setAuthor] = useState("");
   const [isbn, setIsbn] = useState("");
   const [price, setPrice] = useState("");
+  const [about, setAbout] = useState("");
   const [quantity, setQuantity] = useState("");
 
   if (!isLoggedIn()) {
@@ -30,10 +31,12 @@ export default function AddBook() {
         isbn,
         price,
         quantity,
+        about,
       });
       navigate("/");
-    } catch {
-      alert("ISBN must be unique and 13 digits");
+    } catch (error) {
+      console.log("Add book error:", error.response?.data || error.message);
+      alert("Error adding book. Check console for details.");
     }
   }
 
@@ -61,12 +64,25 @@ export default function AddBook() {
 
             <div>
               <label>Price *</label>
-              <input value={price} onChange={e => setPrice(e.target.value)} />
+              <input
+                type="number"
+                step="0.01"
+                value={price}
+                onChange={e => setPrice(e.target.value)}
+              />
             </div>
 
             <div>
               <label>Quantity *</label>
-              <input value={quantity} onChange={e => setQuantity(e.target.value)} />
+              <input
+                type="number"
+                value={quantity}
+                onChange={e => setQuantity(e.target.value)}
+              />
+            </div>
+            <div>
+              <label>About *</label>
+              <input value={about} onChange={e => setAbout(e.target.value)} />
             </div>
           </div>
 
