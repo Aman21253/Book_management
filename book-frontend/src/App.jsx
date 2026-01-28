@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/login";
 import BookList from "./pages/BookList";
 import AddBook from "./pages/AddBook";
+import ChatHistory from "./pages/ChatHistory";
 import Layout from "./pages/layout";
 
 export default function App() {
@@ -13,25 +14,34 @@ export default function App() {
       <Route path="/login" element={<Login />} />
 
       {!isLoginPage && (
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <BookList />
-            </Layout>
-          }
-        />
-      )}
+        <>
+          <Route
+            path="/"
+            element={
+              <Layout>
+                <BookList />
+              </Layout>
+            }
+          />
 
-      {!isLoginPage && (
-        <Route
-          path="/add"
-          element={
-            <Layout>
-              <AddBook />
-            </Layout>
-          }
-        />
+          <Route
+            path="/add"
+            element={
+              <Layout>
+                <AddBook />
+              </Layout>
+            }
+          />
+
+          <Route
+            path="/books/:id/chat"
+            element={
+              <Layout>
+                <ChatHistory />
+              </Layout>
+            }
+          />
+        </>
       )}
     </Routes>
   );

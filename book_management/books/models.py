@@ -13,6 +13,7 @@ class Book(models.Model):
     )
     quantity = models.PositiveIntegerField(default=0)
     about = models.TextField(default="", blank=True)
+    summary = models.TextField(default="", blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

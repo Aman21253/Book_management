@@ -13,9 +13,33 @@ export default function AddBook() {
   const [price, setPrice] = useState("");
   const [about, setAbout] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [summaryLoading, setSummaryLoading] = useState(false);
 
   if (!isLoggedIn()) {
     return <Navigate to="/login" />;
+  }
+
+  async function generateSummary() {
+    if (!title || !author) {
+      alert("Please enter book title and author name to generate summary");
+      return;
+    }
+
+    setSummaryLoading(true);
+    try {
+      const response = await API.post("books/generate_summary/", {
+        title,
+        author,
+      });
+      setAbout(response.data.summary);
+      alert("Summary generated successfully!");
+    } catch (error) {
+      console.log("Generate summary error:", error.response?.data || error.message);
+      alert("Error generating summary. Please try again.");
+    } finally {
+      setSummaryLoading(false);
+    }
   }
 
   async function handleAdd() {
@@ -24,6 +48,7 @@ export default function AddBook() {
       return;
     }
 
+    setLoading(true);
     try {
       await API.post("books/", {
         title,
@@ -37,6 +62,8 @@ export default function AddBook() {
     } catch (error) {
       console.log("Add book error:", error.response?.data || error.message);
       alert("Error adding book. Check console for details.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -81,13 +108,37 @@ export default function AddBook() {
               />
             </div>
             <div>
-              <label>About *</label>
-              <input value={about} onChange={e => setAbout(e.target.value)} />
+              <label>About / Summary</label>
+              <textarea 
+                value={about} 
+                onChange={e => setAbout(e.target.value)}
+                rows="4"
+                placeholder="Auto-generate using AI or enter manually"
+              />
+              <button 
+                type="button"
+                onClick={generateSummary}
+                disabled={summaryLoading || !title || !author}
+                style={{
+                  marginTop: "8px",
+                  padding: "6px 12px",
+                  backgroundColor: summaryLoading ? "#ccc" : "#007bff",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: summaryLoading ? "not-allowed" : "pointer",
+                  fontSize: "14px"
+                }}
+              >
+                {summaryLoading ? "Generating..." : "Generate Summary with AI"}
+              </button>
             </div>
           </div>
 
           <div className="actions">
-            <button onClick={handleAdd}>Add Book</button>
+            <button onClick={handleAdd} disabled={loading}>
+              {loading ? "Adding..." : "Add Book"}
+            </button>
           </div>
         </div>
       </div>

@@ -1,0 +1,13 @@
+# AI Integration Dependencies
+
+# Required for OpenAI integration
+openai>=1.3.0
+
+# Required for environment variable management
+python-dotenv>=1.0.0
+
+# Optional: For Google Gemini support
+# google-generativeai>=0.3.0
+
+# Optional: For Anthropic Claude support
+# anthropic>=0.7.0

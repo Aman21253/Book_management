@@ -1,9 +1,12 @@
 import "../styles/page.css";
 import "../styles/table.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
 
 export default function BookList() {
+  const navigate = useNavigate();
+
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,14 +15,14 @@ export default function BookList() {
   }, []);
 
   const fetchBooks = async () => {
+    setLoading(true);
     try {
       const res = await API.get("books/");
-      // Handle both paginated and non-paginated responses
-      const booksData = res.data.results || res.data;
+      const booksData = res.data.results || res.data; // supports paginated/non-paginated
       setBooks(Array.isArray(booksData) ? booksData : []);
     } catch (err) {
       console.error("Error fetching books:", err);
-      setBooks([]); // Set empty array on error
+      setBooks([]);
     } finally {
       setLoading(false);
     }
@@ -57,7 +60,20 @@ export default function BookList() {
                       <td>{book.isbn}</td>
                       <td>{book.price}</td>
                       <td>{book.quantity}</td>
-                      <td className="action">👁️</td>
+                      <td className="action">
+                        <button
+                          onClick={() => navigate(`/books/${book.id}/chat`)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            fontSize: "18px",
+                          }}
+                          title="Open chat history"
+                        >
+                          👁️
+                        </button>
+                      </td>
                     </tr>
                   ))
                 ) : (
@@ -73,10 +89,10 @@ export default function BookList() {
 
           {/* Pagination (UI only for now) */}
           <div className="pagination">
-            <button>Previous</button>
+            <button disabled>Previous</button>
             <button className="active">1</button>
-            <button>2</button>
-            <button>Next</button>
+            <button disabled>2</button>
+            <button disabled>Next</button>
           </div>
         </div>
       </div>

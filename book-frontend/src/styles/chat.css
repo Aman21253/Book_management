@@ -1,18 +1,196 @@
 @import "./variable.css";
 
-.chat {
-  max-width: 800px;
-  margin: auto;
-  background: white;
-  padding: 24px;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
+/* ===============================
+   PAGE GRID
+================================ */
+.chat-page {
+  display: grid;
+  gap: 24px;
+  align-items: start;
 }
 
-.message {
-  max-width: 75%;
+.chat-page.one-col {
+  grid-template-columns: 1fr; /* Before Start AI Chat */
 }
 
-.user {
-  align-self: flex-end;
+.chat-page.two-col {
+  grid-template-columns: 2fr 1fr; /* After Start AI Chat */
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .chat-page.two-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===============================
+   LEFT PANEL
+================================ */
+.chat-left-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.chat-history {
+  margin-top: 16px;
+  height: 62vh;
+  overflow-y: auto;
+  padding: 16px;
+  border-radius: 14px;
+  background: #f7f7fb;
+  border: 1px solid #e5e7eb;
+}
+
+/* Scrollbar */
+.chat-history::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-history::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 8px;
+}
+.chat-history::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* About box */
+.chat-about {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.about-text {
+  margin: 0;
+  line-height: 1.6;
+  color: #374151;
+  font-size: 14px;
+}
+
+/* ===============================
+   CHAT BUBBLES
+================================ */
+.chat-bubble {
+  max-width: 92%;
+  padding: 12px 14px;
+  margin: 10px 0;
+  border-radius: 12px;
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.chat-bubble.user {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.chat-bubble.ai {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+.btn-primary {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 12px;
+  background: #3b5bdb;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: opacity 0.15s ease;
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+}
+
+.btn-primary:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   ✅ RIGHT SIDE AI CHAT PANEL
+   (MATCHES YOUR FIRST IMAGE)
+================================ */
+.ai-panel {
+  display: flex;
+  flex-direction: column;
+  height: 62vh;                 /* same height as left */
+  border-radius: 14px;
+  overflow: hidden;
+  padding: 0 !important;        /* override .card padding */
+}
+
+/* Header */
+.ai-panel-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.ai-panel-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Body (empty area like reference UI) */
+.ai-panel-body {
+  flex: 1;
+  background: #ffffff;
+}
+
+/* Footer (input fixed at bottom) */
+.ai-panel-footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 14px 16px;
+}
+
+/* Input */
+.ai-panel-input {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  outline: none;
+  font-size: 14px;
+}
+
+.ai-panel-input:focus {
+  border-color: #4f46e5;
+}
+
+/* Send button */
+.ai-panel-send {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 0 10px 10px 0;
+  background: #3b5bdb;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ai-panel-send:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
 }
