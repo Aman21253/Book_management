@@ -32,7 +32,7 @@ export default function App() {
               </Layout>
             }
           />
-
+          {/*Chat history route */}
           <Route
             path="/books/:id/chat"
             element={

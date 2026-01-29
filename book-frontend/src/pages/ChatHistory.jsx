@@ -10,7 +10,7 @@ export default function ChatHistory() {
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Start closed (first screen has only left panel)
+  //Start closed (first screen has only left panel)
   const [showChat, setShowChat] = useState(false);
 
   const [messages, setMessages] = useState([]); // {role:'user'|'ai', text:''}
@@ -61,7 +61,7 @@ export default function ChatHistory() {
   const handleStart = async () => {
     if (!book) return;
 
-    // ✅ show the AI chat card (right side)
+    // show the AI chat card
     setShowChat(true);
 
     // reset conversation
@@ -97,7 +97,6 @@ export default function ChatHistory() {
     <div className="page">
       <div className="page-content">
         <div className={`chat-page ${showChat ? "two-col" : "one-col"}`}>
-          {/* LEFT PANEL */}
           <div className="chat-left card">
             <div className="chat-left-header">
               <h2 className="chat-title">Chat History &gt; {book.title}</h2>
@@ -108,7 +107,6 @@ export default function ChatHistory() {
             </div>
 
             <div className="chat-history">
-              {/* Before start */}
               {!showChat && (
                 <div className="chat-about">
                   <p className="about-text">
@@ -117,7 +115,6 @@ export default function ChatHistory() {
                 </div>
               )}
 
-              {/* After start */}
               {showChat && (
                 <>
                   {messages.map((m, idx) => (
@@ -136,7 +133,6 @@ export default function ChatHistory() {
             </div>
           </div>
 
-          {/* ✅ RIGHT SIDE SMALL CARD (like your design) */}
           {showChat && (
           <div className="ai-panel card">
             <div className="ai-panel-header">
@@ -144,7 +140,6 @@ export default function ChatHistory() {
             </div>
                   
             <div className="ai-panel-body">
-              {/* (Empty for now) Later you can show chat messages here */}
             </div>
                   
             <div className="ai-panel-footer">
