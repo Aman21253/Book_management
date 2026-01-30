@@ -8,11 +8,12 @@ from rest_framework.response import Response
 from .models import Book
 from .serializers import BookSerializer
 from .ai_service import generate_book_summary, generate_text
+from .pagination import BookPagination
 
 
 class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
-
+    pagination_class = BookPagination
     def get_queryset(self):
         queryset = Book.objects.all().order_by("-id")
 

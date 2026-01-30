@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import API from "../api/axios";
 
+const PAGE_SIZE = 10;
+
 export default function BookList() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -12,26 +14,50 @@ export default function BookList() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0); // total records
+  const totalPages = Math.max(1, Math.ceil(count / PAGE_SIZE));
+
   // to disable assign button while assigning
   const [assigningId, setAssigningId] = useState(null);
 
   useEffect(() => {
+    // if search changes => reset page to 1
+    setPage(1);
+  }, [q]);
+
+  useEffect(() => {
     fetchBooks();
     // eslint-disable-next-line
-  }, [q]);
+  }, [q, page]);
 
   const fetchBooks = async () => {
     setLoading(true);
     try {
       const res = await API.get("books/", {
-        params: q ? { q } : {},
+        params: {
+          ...(q ? { q } : {}),
+          page,
+          page_size: PAGE_SIZE,
+        },
       });
 
-      const booksData = res.data.results || res.data;
-      setBooks(Array.isArray(booksData) ? booksData : []);
+      // ✅ DRF pagination format: {count, results, next, previous}
+      if (res.data && typeof res.data === "object" && "results" in res.data) {
+        setBooks(Array.isArray(res.data.results) ? res.data.results : []);
+        setCount(Number(res.data.count || 0));
+      } else {
+        // ✅ non-paginated array fallback
+        const arr = Array.isArray(res.data) ? res.data : [];
+        setCount(arr.length);
+        // client-side slice as fallback
+        const start = (page - 1) * PAGE_SIZE;
+        setBooks(arr.slice(start, start + PAGE_SIZE));
+      }
     } catch (err) {
       console.error("Error fetching books:", err);
       setBooks([]);
+      setCount(0);
     } finally {
       setLoading(false);
     }
@@ -46,9 +72,7 @@ export default function BookList() {
       // ✅ update quantity locally without refetch
       setBooks((prev) =>
         prev.map((b) =>
-          b.id === bookId
-            ? { ...b, quantity: res.data.remaining_quantity }
-            : b
+          b.id === bookId ? { ...b, quantity: res.data.remaining_quantity } : b
         )
       );
 
@@ -59,6 +83,25 @@ export default function BookList() {
     } finally {
       setAssigningId(null);
     }
+  };
+
+  // ✅ pagination helpers
+  const goPrev = () => setPage((p) => Math.max(1, p - 1));
+  const goNext = () => setPage((p) => Math.min(totalPages, p + 1));
+  const goToPage = (p) => setPage(p);
+
+  // show max 5 page buttons (like 1 2 3 4 5)
+  const getPageButtons = () => {
+    const maxButtons = 5;
+    let start = Math.max(1, page - 2);
+    let end = Math.min(totalPages, start + maxButtons - 1);
+
+    // adjust start if we're near the end
+    start = Math.max(1, end - maxButtons + 1);
+
+    const pages = [];
+    for (let i = start; i <= end; i++) pages.push(i);
+    return pages;
   };
 
   if (loading) return <p style={{ padding: 40 }}>Loading...</p>;
@@ -145,12 +188,31 @@ export default function BookList() {
             </table>
           </div>
 
-          {/* Pagination UI (optional) */}
-          <div className="pagination">
-            <button disabled>Previous</button>
-            <button className="active">1</button>
-            <button disabled>Next</button>
+          {/* ✅ Pagination */}
+          <div className="pagination" style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 18 }}>
+            <button onClick={goPrev} disabled={page === 1}>
+              Previous
+            </button>
+
+            {getPageButtons().map((p) => (
+              <button
+                key={p}
+                onClick={() => goToPage(p)}
+                className={p === page ? "active" : ""}
+              >
+                {p}
+              </button>
+            ))}
+
+            <button onClick={goNext} disabled={page === totalPages}>
+              Next
+            </button>
           </div>
+
+          {/* optional: show count */}
+          <p style={{ textAlign: "center", marginTop: 10, color: "#6b7280" }}>
+            Page {page} of {totalPages} • Total books: {count}
+          </p>
         </div>
       </div>
     </div>
