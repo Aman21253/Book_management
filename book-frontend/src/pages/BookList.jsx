@@ -12,6 +12,9 @@ export default function BookList() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // to disable assign button while assigning
+  const [assigningId, setAssigningId] = useState(null);
+
   useEffect(() => {
     fetchBooks();
     // eslint-disable-next-line
@@ -31,6 +34,30 @@ export default function BookList() {
       setBooks([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleAssign = async (bookId) => {
+    try {
+      setAssigningId(bookId);
+
+      const res = await API.post(`books/${bookId}/assign/`);
+
+      // ✅ update quantity locally without refetch
+      setBooks((prev) =>
+        prev.map((b) =>
+          b.id === bookId
+            ? { ...b, quantity: res.data.remaining_quantity }
+            : b
+        )
+      );
+
+      alert(res.data.message || "Assigned successfully!");
+    } catch (error) {
+      console.log("Assign book error:", error.response?.data || error.message);
+      alert(error.response?.data?.error || "Failed to assign book");
+    } finally {
+      setAssigningId(null);
     }
   };
 
@@ -66,7 +93,32 @@ export default function BookList() {
                       <td>{book.isbn}</td>
                       <td>{book.price}</td>
                       <td>{book.quantity}</td>
+
                       <td className="action">
+                        {/* ✅ Assign button */}
+                        <button
+                          onClick={() => handleAssign(book.id)}
+                          disabled={book.quantity <= 0 || assigningId === book.id}
+                          style={{
+                            marginRight: "10px",
+                            padding: "6px 10px",
+                            borderRadius: "6px",
+                            border: "1px solid #ddd",
+                            cursor:
+                              book.quantity <= 0 || assigningId === book.id
+                                ? "not-allowed"
+                                : "pointer",
+                            opacity:
+                              book.quantity <= 0 || assigningId === book.id ? 0.6 : 1,
+                            background: "#fff",
+                            fontSize: "13px",
+                          }}
+                          title={book.quantity <= 0 ? "Out of stock" : "Assign book"}
+                        >
+                          {assigningId === book.id ? "Assigning..." : "Assign"}
+                        </button>
+
+                        {/* Chat / details */}
                         <button
                           onClick={() => navigate(`/books/${book.id}/chat`)}
                           style={{
@@ -91,6 +143,13 @@ export default function BookList() {
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* Pagination UI (optional) */}
+          <div className="pagination">
+            <button disabled>Previous</button>
+            <button className="active">1</button>
+            <button disabled>Next</button>
           </div>
         </div>
       </div>
