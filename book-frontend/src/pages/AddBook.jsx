@@ -51,12 +51,12 @@ export default function AddBook() {
     setLoading(true);
     try {
       await API.post("books/", {
-        title,
-        author,
-        isbn,
-        price,
-        quantity,
-        about,
+        title: title.trim(),
+        author: author.trim(),
+        isbn: String(isbn).trim(),
+        price: Number(price),
+        quantity: Number(quantity),
+        about: about || "",
       });
       navigate("/");
     } catch (error) {
@@ -113,9 +113,9 @@ export default function AddBook() {
                 value={about} 
                 onChange={e => setAbout(e.target.value)}
                 rows="4"
-                placeholder="Auto-generate using AI or enter manually"
+                placeholder="Summary of the book"
               />
-              <button 
+              {/* <button 
                 type="button"
                 onClick={generateSummary}
                 disabled={summaryLoading || !title || !author}
@@ -131,7 +131,7 @@ export default function AddBook() {
                 }}
               >
                 {summaryLoading ? "Generating..." : "Generate Summary with AI"}
-              </button>
+              </button> */}
             </div>
           </div>
 

@@ -1,24 +1,30 @@
 import "../styles/page.css";
 import "../styles/table.css";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import API from "../api/axios";
 
 export default function BookList() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const q = searchParams.get("q") || "";
 
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchBooks();
-  }, []);
+    // eslint-disable-next-line
+  }, [q]);
 
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      const res = await API.get("books/");
-      const booksData = res.data.results || res.data; // supports paginated/non-paginated
+      const res = await API.get("books/", {
+        params: q ? { q } : {},
+      });
+
+      const booksData = res.data.results || res.data;
       setBooks(Array.isArray(booksData) ? booksData : []);
     } catch (err) {
       console.error("Error fetching books:", err);
@@ -51,7 +57,7 @@ export default function BookList() {
               </thead>
 
               <tbody>
-                {books && books.length > 0 ? (
+                {books.length > 0 ? (
                   books.map((book) => (
                     <tr key={book.id}>
                       <td>{book.id}</td>
@@ -69,7 +75,7 @@ export default function BookList() {
                             cursor: "pointer",
                             fontSize: "18px",
                           }}
-                          title="Open chat history"
+                          title="Open chat"
                         >
                           👁️
                         </button>
@@ -85,14 +91,6 @@ export default function BookList() {
                 )}
               </tbody>
             </table>
-          </div>
-
-          {/* Pagination (UI only for now) */}
-          <div className="pagination">
-            <button disabled>Previous</button>
-            <button className="active">1</button>
-            <button disabled>2</button>
-            <button disabled>Next</button>
           </div>
         </div>
       </div>
