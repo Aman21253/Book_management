@@ -2,6 +2,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Login from "./pages/login";
 import BookList from "./pages/BookList";
 import AddBook from "./pages/AddBook";
+import AssignBook from "./pages/AssignBook";
 import ChatHistory from "./pages/ChatHistory";
 import Layout from "./pages/layout";
 
@@ -32,7 +33,16 @@ export default function App() {
               </Layout>
             }
           />
-          {/*Chat history route */}
+
+          <Route
+            path="/books/:id/assign"
+            element={
+              <Layout>
+                <AssignBook />
+              </Layout>
+            }
+          />
+
           <Route
             path="/books/:id/chat"
             element={

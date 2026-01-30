@@ -140,25 +140,20 @@ export default function BookList() {
                       <td className="action">
                         {/* ✅ Assign button */}
                         <button
-                          onClick={() => handleAssign(book.id)}
-                          disabled={book.quantity <= 0 || assigningId === book.id}
+                          onClick={() => navigate(`/books/${book.id}/assign`)}
+                          disabled={book.quantity <= 0}
                           style={{
                             marginRight: "10px",
                             padding: "6px 10px",
                             borderRadius: "6px",
                             border: "1px solid #ddd",
-                            cursor:
-                              book.quantity <= 0 || assigningId === book.id
-                                ? "not-allowed"
-                                : "pointer",
-                            opacity:
-                              book.quantity <= 0 || assigningId === book.id ? 0.6 : 1,
+                            cursor: book.quantity <= 0 ? "not-allowed" : "pointer",
+                            opacity: book.quantity <= 0 ? 0.6 : 1,
                             background: "#fff",
                             fontSize: "13px",
                           }}
-                          title={book.quantity <= 0 ? "Out of stock" : "Assign book"}
                         >
-                          {assigningId === book.id ? "Assigning..." : "Assign"}
+                          Assign
                         </button>
 
                         {/* Chat / details */}
