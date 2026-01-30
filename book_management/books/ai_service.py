@@ -50,7 +50,7 @@ def _gemini(prompt: str) -> str:
 
     genai.configure(api_key=api_key)
 
-    model = genai.GenerativeModel("gemini-2.0-flash")
+    model = genai.GenerativeModel("gemini-2.5-flash")
     response = model.generate_content(prompt)
 
     if not response or not getattr(response, "text", None):
