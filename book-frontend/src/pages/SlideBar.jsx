@@ -8,7 +8,7 @@ export default function Sidebar() {
 
       <nav>
         <NavLink
-          to="/"
+          to="/add"
           className={({ isActive }) =>
             isActive ? "menu active" : "menu"
           }
@@ -17,13 +17,14 @@ export default function Sidebar() {
         </NavLink>
 
         <NavLink
-          to="/books"
+          to="/"
           className={({ isActive }) =>
             isActive ? "menu active" : "menu"
           }
         >
           Book Details
         </NavLink>
+
         <NavLink
           to="/students/add"
           className={({ isActive }) =>
@@ -32,11 +33,12 @@ export default function Sidebar() {
         >
           Add Student
         </NavLink>
+
+        
         <NavLink
           to="/students"
-          className={({ isActive }) =>
-            isActive ? "menu active" : "menu"
-          }
+          end
+          className={({ isActive }) => (isActive ? "menu active" : "menu")}
         >
           Student Details
         </NavLink>

@@ -48,8 +48,9 @@ export default function App() {
             <Layout>
               <StudentList />
             </Layout>
-            } />
-          <Route path="/students/add" element={<Layout><AddStudent /></Layout>} />
+            } 
+          />
+          
           <Route
             path="/books/:id/chat"
             element={
@@ -58,6 +59,7 @@ export default function App() {
               </Layout>
             }
           />
+          <Route path="/students/add" element={<Layout><AddStudent /></Layout>} />
           <Route path="*" element={<div>Page Not Found</div>} />
         </>
       )}
