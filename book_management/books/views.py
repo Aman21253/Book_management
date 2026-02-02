@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import transaction
-from django.db.models import F
+from django.db.models import F, Q
 
 from .models import Book, BookAssignment
 from .serializers import BookSerializer, BookAssignmentSerializer
@@ -14,6 +14,19 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by("-id")
     serializer_class = BookSerializer
 
+    def get_queryset(self):
+        queryset = Book.objects.all().order_by("-id")
+
+        q = self.request.query_params.get("q")
+        if q:
+            queryset = queryset.filter(
+                Q(title__icontains=q) |
+                Q(author__icontains=q) |
+                Q(isbn__icontains=q)
+            )
+
+        return queryset
+    
     def get_permissions(self):
         if self.action in ["list", "retrieve"]:
             return [permissions.AllowAny()]
