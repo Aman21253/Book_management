@@ -16,12 +16,21 @@ def generate_text(prompt: str) -> str:
 
 
 def generate_book_summary(book_name: str, author_name: str) -> str:
+    import google.generativeai as genai
     """
     Backward compatible function
     Used by old /generate_summary endpoint
     """
-    prompt = f"{book_name} by {author_name}. Share summary of this book in 3-4 lines."
-    return generate_text(prompt)
+    prompt = (
+        f"I want to know the book cost '{book_name}' "
+        f"'{book_name}' written by '{author_name}' ."
+    )
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    response = model.generate_content(prompt)
+    if not response or not response.text:
+        raise RuntimeError("Gemini returned empty response")
+    return response.text.strip()
+
 
 
 def _openai(prompt: str) -> str:

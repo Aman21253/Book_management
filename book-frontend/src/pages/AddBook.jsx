@@ -108,14 +108,14 @@ export default function AddBook() {
               />
             </div>
             <div>
-              <label>About / Summary</label>
+              <label>About</label>
               <textarea 
                 value={about} 
                 onChange={e => setAbout(e.target.value)}
                 rows="4"
-                placeholder="Summary of the book"
+                placeholder="Generate or write a brief summary about the book using AI"
               />
-              {/* <button 
+              <button 
                 type="button"
                 onClick={generateSummary}
                 disabled={summaryLoading || !title || !author}
@@ -131,7 +131,7 @@ export default function AddBook() {
                 }}
               >
                 {summaryLoading ? "Generating..." : "Generate Summary with AI"}
-              </button> */}
+              </button>
             </div>
           </div>
 

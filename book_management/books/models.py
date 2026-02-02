@@ -53,3 +53,22 @@ class BookAssignment(models.Model):
 
     def __str__(self):
         return f"{self.book.title} -> {self.person_name} ({self.quantity})"
+    
+# Student Model
+class Student(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=11, unique=True)
+    address = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL,
+        null=True, blank=True, default=None
+    )
+
+    class Meta:
+        db_table = "students"
+
+    def __str__(self):
+        return self.name

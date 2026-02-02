@@ -4,11 +4,23 @@ from rest_framework.response import Response
 from django.db import transaction
 from django.db.models import F, Q
 
-from .models import Book, BookAssignment
-from .serializers import BookSerializer, BookAssignmentSerializer
+from .models import Book, BookAssignment, Student
+from .serializers import BookSerializer, BookAssignmentSerializer, StudentSerializer
 
 from .ai_service import generate_book_summary, generate_text
 
+
+class StudentViewSet(viewsets.ModelViewSet):
+    queryset = Student.objects.all().order_by("-id")
+    serializer_class = StudentSerializer
+
+    def get_permissions(self):
+        if self.action in ["list", "retrieve"]:
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
+
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by("-id")
@@ -34,6 +46,25 @@ class BookViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
+
+    @action (detail=False, methods=["post"],
+             permissions_classes=[permissions.IsAuthenticated]
+            )
+    def generate_summary(self, request):
+        title = request.data.get("title")
+        author = request.data.get("author")
+
+        if not title or not author:
+            return Response({"error": "Both title and author are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            summary = generate_book_summary(title, author)
+            return Response({"summary": summary}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(
+                {"error": f"AI service unavailable. {str(e)}"},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE
+            )
 
     #  Assign book (decrease quantity + save assignment)
     @action(detail=True, methods=["post"], permission_classes=[permissions.IsAuthenticated])

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, BookAssignment
+from .models import Book, BookAssignment, Student
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 class BookSerializer(serializers.ModelSerializer):
@@ -13,6 +13,11 @@ class BookSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("ISBN must be exactly 13 digits")
         return value
 
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = "__all__"
+        read_only_fields = ("created_at", "created_by")
 
 class BookAssignmentSerializer(serializers.ModelSerializer):
     class Meta:

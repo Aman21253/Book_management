@@ -5,6 +5,8 @@ import AddBook from "./pages/AddBook";
 import AssignBook from "./pages/AssignBook";
 import ChatHistory from "./pages/ChatHistory";
 import Layout from "./pages/layout";
+import StudentList from "./pages/StudentList";
+import AddStudent from "./pages/AddStudent";
 
 export default function App() {
   const location = useLocation();
@@ -42,7 +44,12 @@ export default function App() {
               </Layout>
             }
           />
-
+          <Route path="/students" element={
+            <Layout>
+              <StudentList />
+            </Layout>
+            } />
+          <Route path="/students/add" element={<Layout><AddStudent /></Layout>} />
           <Route
             path="/books/:id/chat"
             element={
@@ -51,6 +58,7 @@ export default function App() {
               </Layout>
             }
           />
+          <Route path="*" element={<div>Page Not Found</div>} />
         </>
       )}
     </Routes>
