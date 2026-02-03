@@ -18,21 +18,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from books.views import BookViewSet, StudentViewSet
+
+from books.views import BookViewSet, StudentViewSet, BookAssignmentViewSet
 from rest_framework_simplejwt.views import TokenObtainPairView
 from books.serializers import MyTokenObtainPairSerializer
 
 router = DefaultRouter()
 router.register(r'books', BookViewSet, basename='books')
 router.register(r'students', StudentViewSet, basename='students')
+router.register(r'assignments', BookAssignmentViewSet, basename='assignments')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path(
         'api/token/',
-        TokenObtainPairView.as_view(
-            serializer_class=MyTokenObtainPairSerializer
-        ),
+        TokenObtainPairView.as_view(serializer_class=MyTokenObtainPairSerializer),
     ),
 ]

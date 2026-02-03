@@ -63,28 +63,6 @@ export default function BookList() {
     }
   };
 
-  const handleAssign = async (bookId) => {
-    try {
-      setAssigningId(bookId);
-
-      const res = await API.post(`books/${bookId}/assign/`);
-
-      // ✅ update quantity locally without refetch
-      setBooks((prev) =>
-        prev.map((b) =>
-          b.id === bookId ? { ...b, quantity: res.data.remaining_quantity } : b
-        )
-      );
-
-      alert(res.data.message || "Assigned successfully!");
-    } catch (error) {
-      console.log("Assign book error:", error.response?.data || error.message);
-      alert(error.response?.data?.error || "Failed to assign book");
-    } finally {
-      setAssigningId(null);
-    }
-  };
-
   // ✅ pagination helpers
   const goPrev = () => setPage((p) => Math.max(1, p - 1));
   const goNext = () => setPage((p) => Math.min(totalPages, p + 1));
@@ -138,24 +116,6 @@ export default function BookList() {
                       <td>{book.quantity}</td>
 
                       <td className="action">
-                        {/* ✅ Assign button */}
-                        <button
-                          onClick={() => navigate(`/books/${book.id}/assign`)}
-                          disabled={book.quantity <= 0}
-                          style={{
-                            marginRight: "10px",
-                            padding: "6px 10px",
-                            borderRadius: "6px",
-                            border: "1px solid #ddd",
-                            cursor: book.quantity <= 0 ? "not-allowed" : "pointer",
-                            opacity: book.quantity <= 0 ? 0.6 : 1,
-                            background: "#fff",
-                            fontSize: "13px",
-                          }}
-                        >
-                          Assign
-                        </button>
-
                         {/* Chat / details */}
                         <button
                           onClick={() => navigate(`/books/${book.id}/chat`)}

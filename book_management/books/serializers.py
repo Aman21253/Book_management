@@ -20,10 +20,13 @@ class StudentSerializer(serializers.ModelSerializer):
         read_only_fields = ("created_at", "created_by")
 
 class BookAssignmentSerializer(serializers.ModelSerializer):
+    book_title = serializers.CharField(source="book.title", read_only=True)
+    student_name = serializers.CharField(source="student.name", read_only=True)
+
     class Meta:
         model = BookAssignment
         fields = "__all__"
-        read_only_fields = ("id", "book", "total_amount", "assigned_by", "assigned_at")
+        read_only_fields = ("transaction_id", "issue", "assigned_by", "status")
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

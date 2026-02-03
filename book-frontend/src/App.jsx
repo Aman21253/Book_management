@@ -7,6 +7,8 @@ import ChatHistory from "./pages/ChatHistory";
 import Layout from "./pages/layout";
 import StudentList from "./pages/StudentList";
 import AddStudent from "./pages/AddStudent";
+import AssignedBooks from "./pages/AssignedBooks";
+import IssueBook from "./pages/IssueBook";
 
 export default function App() {
   const location = useLocation();
@@ -56,6 +58,22 @@ export default function App() {
             element={
               <Layout>
                 <ChatHistory />
+              </Layout>
+            }
+          />
+          <Route
+            path="/assign"
+            element={
+              <Layout>
+                <AssignedBooks />
+              </Layout>
+            }
+          />
+          <Route
+            path="/issue"
+            element={
+              <Layout>
+                <IssueBook />
               </Layout>
             }
           />

@@ -42,6 +42,20 @@ export default function Sidebar() {
         >
           Student Details
         </NavLink>
+
+        <NavLink
+          to="/issue"
+          className={({ isActive }) => (isActive ? "menu active" : "menu")}
+        >
+          Issue Book
+        </NavLink>
+        <NavLink
+          to="/assign"
+          end
+          className={({ isActive }) => (isActive ? "menu active" : "menu")}
+        >
+          Assigned books
+        </NavLink>
       </nav>
     </div>
   );
